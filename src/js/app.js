@@ -1,12 +1,13 @@
-import React from 'react'
-import List from 'react'
+import React from "react";
+import { Header } from "./component/header";
+import { TodoList } from "./component/to-do-list";
 
-function App() {
-    return (
-        <div className="container">
-            <List />
-        </div>
-    )
+//create your first component
+export function App() {
+	return (
+		<div className="container">
+			<Header />
+			<TodoList />
+		</div>
+	);
 }
-
-export default App

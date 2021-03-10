@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
+import PropTypes from "prop-types";
 
-function Footer() {
-    return (
-        <div>
-            
-        </div>
-    )
+export function Footer({ list }) {
+	return (
+		<small className="text-break text-secondary">
+			{list.length !== 0 ? `${list.length} task left` : "no tasks to do"}
+		</small>
+	);
 }
 
-export default Footer
+Footer.propTypes = {
+	list: PropTypes.array,
+	deleteTask: PropTypes.func
+};

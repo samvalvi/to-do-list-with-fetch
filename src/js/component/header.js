@@ -1,11 +1,9 @@
-import React from 'rHact'
+import React from "react";
 
-function Header() {
-    return (
-        <div>
-            
-        </div>
-    )
+export function Header() {
+	return (
+		<div className="text-center">
+			<h1 className="display-1 text-secondary">to do list</h1>
+		</div>
+	);
 }
-
-export default Header
