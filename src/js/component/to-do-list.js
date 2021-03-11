@@ -69,7 +69,7 @@ export function TodoList() {
 			<div className="bg-white">
 				<List list={list} deleteTask={deleteTask} />
 			</div>
-			<div className="footer m-1">
+			<div className="footer bg-secondary">
 				<Footer list={list} />
 			</div>
 		</div>
