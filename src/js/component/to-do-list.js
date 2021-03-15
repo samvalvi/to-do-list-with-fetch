@@ -8,9 +8,12 @@ export function TodoList() {
 	const [error, setError] = useState(false);
 
 	useEffect(() => {
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/samvalvi")
-			.then(resp => resp.json())
-			.then(data => setList(data));
+        const getList = async () => {
+            const response = await fetch("https://assets.breatheco.de/apis/fake/todos/user/samvalvi")
+            const data = await response.json();
+            setList(data)
+        }
+        getList().catch(error => console.error(error));
 	}, []);
 
 	const handleChange = e => {
@@ -22,9 +25,10 @@ export function TodoList() {
 	};
 
 	//Delete the task
-	const deleteTask = key => {
-		const newTasks = list.filter((task, index) => index !== key);
-		setList(newTasks);
+	const deleteTask = () => {
+		/*const newTasks = list.filter((task, index) => index !== key);
+        setList(newTasks);*/
+		
 	};
 
 	const handleSubmit = e => {
@@ -38,15 +42,7 @@ export function TodoList() {
 
 		setTask("");
 
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/samvalvi", {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify(list)
-		})
-			.then(resp => resp.json())
-			.then(data => console.log(data));
+		
 	};
 
 	return (
