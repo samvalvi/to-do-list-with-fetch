@@ -6,15 +6,51 @@ export function TodoList() {
 	const [list, setList] = useState([]);
 	const [task, setTask] = useState("");
 	const [error, setError] = useState(false);
+	const url = "https://assets.breatheco.de/apis/fake/todos/user/samvalvi";
+
+	const getList = () => {
+		fetch(url, {
+			method: "GET",
+			headers: { "Content-Type": "application/json" }
+		})
+			.then(resp => resp.json())
+			.then(data => setList(data))
+			.catch(error => console.error(error));
+	};
+
+	const newList = () => {
+		let list = [];
+		fetch(url, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(list)
+		})
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				getList();
+			})
+			.catch(error => console.error(error));
+	};
+
+	const updateList = () => {
+		fetch(url, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(list)
+		})
+			.then(resp => resp.json())
+			.then(data => console.log(data))
+			.catch(error => console.error(error));
+	};
 
 	useEffect(() => {
-        const getList = async () => {
-            const response = await fetch("https://assets.breatheco.de/apis/fake/todos/user/samvalvi")
-            const data = await response.json();
-            setList(data)
-        }
-        getList().catch(error => console.error(error));
+		getList();
 	}, []);
+
+	useEffect(() => {
+		updateList();
+	}, [list]);
 
 	const handleChange = e => {
 		if (error) {
@@ -25,10 +61,24 @@ export function TodoList() {
 	};
 
 	//Delete the task
-	const deleteTask = () => {
-		/*const newTasks = list.filter((task, index) => index !== key);
-        setList(newTasks);*/
-		
+	const deleteTask = key => {
+		const newTasks = list.filter((task, index) => index !== key);
+		setList(newTasks);
+		updateList();
+	};
+
+	//Delete all tasks
+	const deleteTasks = () => {
+		fetch(url, {
+			method: "DELETE",
+			headers: { "Content-Type": "application/json" }
+		})
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				newList();
+			})
+			.catch(error => console.error(error));
 	};
 
 	const handleSubmit = e => {
@@ -39,34 +89,44 @@ export function TodoList() {
 		} else {
 			setList([...list, { label: task, done: false }]);
 		}
-
 		setTask("");
-
-		
 	};
 
 	return (
-		<div className="w-50 mx-auto shadow">
-			<h6 className="w-50 mx-auto fw-light text-danger">
-				{error ? error : null}
-			</h6>
+		<div className="container">
+			<div className="w-50 mx-auto shadow">
+				<h6 className="w-50 mx-auto fw-light text-danger">
+					{error ? error : null}
+				</h6>
 
-			<form onSubmit={handleSubmit}>
-				<input
-					className="list-group-item w-100"
-					type="text"
-					placeholder="What needs to be done?"
-					name="taskName"
-					value={task}
-					onChange={handleChange}
-				/>
-			</form>
+				<form onSubmit={handleSubmit}>
+					<input
+						className="col list-group-item w-100"
+						type="text"
+						placeholder="What needs to be done?"
+						name="taskName"
+						value={task}
+						onChange={handleChange}
+					/>
+				</form>
 
-			<div className="bg-white">
-				<List list={list} deleteTask={deleteTask} />
+				<div className="bg-white">
+					<List list={list} deleteTask={deleteTask} />
+				</div>
+
+				<div className="footer bg-secondary">
+					<Footer list={list} />
+				</div>
 			</div>
-			<div className="footer bg-secondary">
-				<Footer list={list} />
+
+			<div
+				className="d-flex justify-content-center mt-3"
+				id="btn-container">
+				<button
+					className="btn btn-secondary"
+					onClick={() => deleteTasks}>
+					Delete All Tasks
+				</button>
 			</div>
 		</div>
 	);
