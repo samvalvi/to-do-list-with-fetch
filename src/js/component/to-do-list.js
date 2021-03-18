@@ -14,7 +14,7 @@ export function TodoList() {
 			headers: { "Content-Type": "application/json" }
 		})
 			.then(resp => resp.json())
-			.then(data => setList(data))
+			.then(data => setList([data]))
 			.catch(error => console.error(error));
 	};
 
@@ -124,7 +124,7 @@ export function TodoList() {
 				id="btn-container">
 				<button
 					className="btn btn-secondary"
-					onClick={() => deleteTasks}>
+					onClick={() => deleteTasks()}>
 					Delete All Tasks
 				</button>
 			</div>
