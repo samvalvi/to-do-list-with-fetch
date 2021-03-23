@@ -14,7 +14,7 @@ export function TodoList() {
 			headers: { "Content-Type": "application/json" }
 		})
 			.then(resp => resp.json())
-			.then(data => setList([data]))
+			.then(data => setList(data))
 			.catch(error => console.error(error));
 	};
 
@@ -50,7 +50,7 @@ export function TodoList() {
 
 	useEffect(() => {
 		updateList();
-	}, [list]);
+	}, []);
 
 	const handleChange = e => {
 		if (error) {
